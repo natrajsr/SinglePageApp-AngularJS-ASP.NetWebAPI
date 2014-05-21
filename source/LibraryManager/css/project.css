@@ -1,0 +1,45 @@
+body {
+  padding-top: 50px;
+}
+.starter-template {
+  padding: 40px 15px;
+  text-align: center;
+}
+
+.navbar-inverse .navbar-brand
+{
+    color:white;
+}
+
+.col-md-4 {
+    vertical-align:bottom;
+}
+
+.spl-header {
+    font-size:18px;
+    font-weight:bold;
+}
+
+.navbar-right {
+    margin-top:15px;
+}
+
+#addEditPanel {
+    background-color:burlywood;
+    padding-bottom:15px;
+    color:white;
+    -webkit-box-shadow: 0px 0px 5px 3px rgba(50, 50, 50, 0.75);
+    -moz-box-shadow:    0px 0px 5px 3px rgba(50, 50, 50, 0.75);
+    box-shadow:         0px 0px 5px 3px rgba(50, 50, 50, 0.75);
+}
+a {
+    cursor:pointer;
+}
+
+.modal-header {
+    background-color:springgreen;
+}
+
+#loading {
+    text-align:center;
+}

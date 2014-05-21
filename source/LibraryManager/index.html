@@ -1,0 +1,150 @@
+﻿<!DOCTYPE html>
+<html lang="en" ng-app="libraryApp">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="images/library.ico">
+
+    <title>Library Management System</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/project.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script src="js/config.js"></script>
+    <script src="js/angular.min.js"></script>
+    <script src="js/jquery-1.11.min.js"></script>
+    <script src="js/books.js"></script>
+</head>
+
+<body ng-controller="BookCtrl">
+
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Library Management System</a>
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li><a id="addBook" data-toggle="modal" data-target="#editPopup" ng-click="addBook()" class="btn btn-sm"><span class="glyphicon glyphicon-plus"></span> Add New Book</a></li>
+                </ul>
+
+            </div><!--/.nav-collapse -->
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <h3 class="sub-header">Available Books</h3>
+            </div>
+            <div class="col-md-2">
+                <form class="navbar-form navbar-right">
+                    <input type="text" class="form-control" ng-model="query" placeholder="Search...">
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8 table-responsive">
+                <table id="book_table" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Author</th>
+                            <th>Publisher</th>
+                            <th>Edition</th>
+                            <th>Copies</th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="book in books | filter:query">
+                            <td>{{book.Id}}</td>
+                            <td><a data-toggle="modal" data-target="#editPopup" ng-click="editBook(book.Id)">{{book.Name}}</a></td>
+                            <td>{{book.Author}}</td>
+                            <td>{{book.Publisher}}</td>
+                            <td>{{book.Edition}}</td>
+                            <td>{{book.Copies}}</td>
+                            <td><a id="deleteBook" class="btn btn-sm" ng-click="deleteBook(book.Id)"><span class="glyphicon glyphicon-trash"></span></a></td>
+                        </tr>
+                        <tr id="loading">
+                            <td colspan="7">Loading...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div><!-- /.container -->
+
+    <div class="modal fade" id="editPopup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button id="close-x-modal" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="addEditHeader">Modal title</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form" name="form" ng-submit="updateBook(form.$valid)" novalidate>
+                        <input type="hidden" id="bookId" name="bookId" ng-value="book.Id" />
+                        <div class="form-group">
+                            <label for="bookName">Name</label>
+                            <input type="text" class="form-control" id="bookName" placeholder="Enter Book Name" name="bName" ng-model="book.Name" required>
+                            <span ng-show="form.bName.$error.required && !form.bName.$pristine">Please enter the book name.</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="author">Author</label>
+                            <input type="text" class="form-control" id="author" placeholder="Enter Author Name" name="author" ng-model="book.Author" required>
+                            <span ng-show="form.author.$error.required && !form.author.$pristine">Please enter the author name.</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="author">Publisher</label>
+                            <input type="text" class="form-control" id="publisher" placeholder="Enter Publisher Name" name="publisher" ng-model="book.Publisher" required>
+                            <span ng-show="form.publisher.$error.required && !form.publisher.$pristine">Please enter the publisher name.</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="edition">Edition</label>
+                            <input type="text" class="form-control" id="edition" placeholder="Enter Edition" name="edition" ng-model="book.Edition">
+                        </div>
+                        <div class="form-group">
+                            <label for="copies">No. Of Copies</label>
+                            <input type="number" ng-model="book.Copies" min="1" max="10" value="1" name="copies" id="copies" required>
+                            <span ng-show="form.copies.$error.required && !form.copies.$pristine">Please enter the number of copies.</span>
+                            <span ng-show="form.copies.$error.min || form.copies.$error.max">
+                                The value must be in range 1 to 10!
+                            </span>
+                        </div>
+                        <input type="hidden" id="editType" />
+                        <button type="submit" class="btn btn-default" ng-disabled="form.$invalid || isUnchanged(book)">Submit</button>
+                        <button id="cancel" type="button" class="btn btn-default" data-dismiss="modal" ng-disabled="isUnchanged(book)">Cancel</button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+
+    <script src="js/bootstrap.min.js"></script>
+</body>
+</html>
