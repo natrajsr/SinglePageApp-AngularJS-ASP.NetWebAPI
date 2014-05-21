@@ -11,6 +11,19 @@ This application contains three different modules
 2. Library API.Model - Separate module to handle view model
 3. Library Manager - Single Page Web Application built with AngularJS
 
+How the data is stored ?
+------------------------
+
+* In Memory Store has been developed at the moment
+* Designed with extensibility i.e., you could add your own model store which can pull data from RDBMS Database Server
+
+How the Data Model can be extended ?
+------------------------------------
+
+* Create a new Model Factory by extending AbstractModelFactory
+* Create and develop a new model stores which connects Database Server 
+* Replace the new Model factory reference with existing InMemoryModelFactory reference in ControllerFactory of Library API project
+
 How to run this project ?
 -------------------------
 
